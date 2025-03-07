@@ -1,0 +1,982 @@
+CREATE SEQUENCE UTILIZATOR_SEQ START WITH 1;
+CREATE SEQUENCE ABONAMENT_SEQ START WITH 1;
+CREATE SEQUENCE PLAYLIST_SEQ START WITH 1;
+CREATE SEQUENCE MELODIE_SEQ START WITH 1;
+CREATE SEQUENCE GEN_SEQ START WITH 1;
+CREATE SEQUENCE ALBUM_SEQ START WITH 1;
+CREATE SEQUENCE ARTIST_SEQ START WITH 1;
+CREATE SEQUENCE CASA_DISCURI_SEQ START WITH 1;
+
+
+
+--ABONAMENT
+
+
+CREATE TABLE ABONAMENT(
+    id_abonament INT DEFAULT ABONAMENT_SEQ.NEXTVAL PRIMARY KEY,
+    tip_abonament VARCHAR(100),
+    CONSTRAINT tip_abonament_check CHECK (tip_abonament IN ('student', 'standard', 'business')),
+    pret DECIMAL(10,2),
+    data_incepere DATE,
+    metoda_plata VARCHAR(100),
+    CONSTRAINT metoda_plata_check CHECK (metoda_plata IN ('paypal', 'visa', 'gift card'))
+);
+
+INSERT INTO ABONAMENT (tip_abonament, pret, data_incepere, metoda_plata) VALUES ('standard', 5.99, '12-SEP-2023', 'visa');
+
+INSERT INTO ABONAMENT (tip_abonament, pret, data_incepere, metoda_plata) VALUES ('student', 2.99, '03-NOV-2015', 'paypal');
+
+INSERT INTO ABONAMENT (tip_abonament, pret, data_incepere, metoda_plata) VALUES ('business', 16.20, '14-JUN-2020', 'visa');
+
+INSERT INTO ABONAMENT (tip_abonament, pret, data_incepere, metoda_plata) VALUES ('standard', 5.99, '09-OCT-2019', 'gift card');
+
+INSERT INTO ABONAMENT (tip_abonament, pret, data_incepere, metoda_plata) VALUES ('student', 2.99, '15-APR-2022', 'paypal');
+
+INSERT INTO ABONAMENT (tip_abonament, pret, data_incepere, metoda_plata) VALUES ('student', 2.99, '12-DEC-2012', 'gift card');
+
+SELECT *
+FROM ABONAMENT
+ORDER BY ID_ABONAMENT;
+
+--UTILIZATOR
+
+CREATE TABLE UTILIZATOR(
+    id_utilizator INT DEFAULT UTILIZATOR_SEQ.NEXTVAL PRIMARY KEY,
+    id_abonament INT,
+    nume VARCHAR(255),
+    email VARCHAR(255),
+    data_inregistrare DATE,
+    tara VARCHAR(3),
+    FOREIGN KEY(id_abonament) REFERENCES ABONAMENT(id_abonament)
+);
+
+INSERT INTO UTILIZATOR (id_abonament, nume, email, data_inregistrare, tara) VALUES (1, 'elenacurecheriu', 'elena.curecheriu@s.unibuc.ro', '12-SEP-2005', 'RO');
+
+INSERT INTO UTILIZATOR (id_abonament, nume, email, data_inregistrare, tara) VALUES (2, 'anastasia', 'anastasiac@yahoo.com', '03-NOV-2008', 'RO');
+
+INSERT INTO UTILIZATOR (id_abonament, nume, email, data_inregistrare, tara) VALUES (3, 'pinkfluffyunicorns', 'dancingonrainbows@gmail.com', '21-MAY-2018', 'US');
+
+INSERT INTO UTILIZATOR (id_abonament, nume, email, data_inregistrare, tara) VALUES (4, 'costinel777', 'costinel777@hotmail.com', '04-APR-2014', 'JP');
+
+INSERT INTO UTILIZATOR (id_abonament, nume, email, data_inregistrare, tara) VALUES (5, 'Marinica1959', 'ilikelemons@gmail.com', '07-JUL-2023', 'SK');
+
+INSERT INTO UTILIZATOR (id_abonament, nume, email, data_inregistrare, tara) VALUES (6, 'ClaudiaAnghel', 'claudiaanghel@yahoo.fr', '23-JAN-2020', 'RO');
+
+SELECT *
+FROM UTILIZATOR
+ORDER BY id_utilizator;
+
+--PLAYLIST
+
+CREATE TABLE PLAYLIST(
+    id_playlist INT DEFAULT PLAYLIST_SEQ.NEXTVAL PRIMARY KEY,
+    id_utilizator INT,
+    nume VARCHAR(255),
+    data_creare DATE,
+    FOREIGN KEY(id_utilizator) REFERENCES UTILIZATOR(id_utilizator)
+);
+
+INSERT INTO PLAYLIST (id_utilizator, nume, data_creare) VALUES (1, 'My favourite songs', '07-JUN-2024');
+
+INSERT INTO PLAYLIST (id_utilizator, nume, data_creare) VALUES (2, 'Chill Vibes', '15-FEB-2023');
+
+INSERT INTO PLAYLIST (id_utilizator, nume, data_creare) VALUES (3, 'Workout Hits', '23-MAR-2024');
+
+INSERT INTO PLAYLIST (id_utilizator, nume, data_creare) VALUES (2, 'Road Trip', '08-APR-2022');
+
+INSERT INTO PLAYLIST (id_utilizator, nume, data_creare) VALUES (3, 'Party Playlist', '11-MAY-2023');
+
+INSERT INTO PLAYLIST (id_utilizator, nume, data_creare) VALUES (3, 'Relaxing Music', '30-SEP-2021');
+
+INSERT INTO PLAYLIST (id_utilizator, nume, data_creare) VALUES (1, 'Study Tunes', '17-NOV-2023');
+
+INSERT INTO PLAYLIST (id_utilizator, nume, data_creare) VALUES (5, 'Throwback Hits', '22-DEC-2022');
+
+SELECT *
+FROM PLAYLIST
+ORDER BY id_playlist;
+
+--CASA DISCURI
+
+CREATE TABLE CASA_DISCURI(
+    id_casa_discuri INT DEFAULT CASA_DISCURI_SEQ.NEXTVAL PRIMARY KEY,
+    nume VARCHAR(255),
+    nume_detinator VARCHAR(255),
+    prenume_detinator VARCHAR(255),
+    an_infiintare INT
+);
+
+
+INSERT INTO CASA_DISCURI(nume, nume_detinator, prenume_detinator, an_infiintare) VALUES ('Universal Music', 'Grainge', 'Lucian', 1934);
+
+INSERT INTO CASA_DISCURI(nume, nume_detinator, prenume_detinator, an_infiintare) VALUES ('Columbia Records', 'Perry', 'Ron', 1889);
+
+INSERT INTO CASA_DISCURI(nume, nume_detinator, prenume_detinator, an_infiintare) VALUES ('Cat Music', 'Golea', 'Sorin', 1991);
+
+INSERT INTO CASA_DISCURI(nume, nume_detinator, prenume_detinator, an_infiintare) VALUES ('Atlantic Records', 'Kallman', 'Craig', 1947);
+
+INSERT INTO CASA_DISCURI(nume, nume_detinator, prenume_detinator, an_infiintare) VALUES ('HaHaHa Production', 'Maria', 'Andrei Tiberiu', 2009);
+
+INSERT INTO CASA_DISCURI(nume, nume_detinator, prenume_detinator, an_infiintare) VALUES ('Global Records', 'Lucian', 'Stefan', 2008);
+
+INSERT INTO CASA_DISCURI(nume, nume_detinator, prenume_detinator, an_infiintare) VALUES ('Hybe Corporation', 'Bang', 'Si-Hyuk', 2005);
+
+SELECT *
+FROM CASA_DISCURI
+ORDER BY id_casa_discuri;
+
+--ARTIST
+
+CREATE TABLE ARTIST(
+    id_artist INT DEFAULT ARTIST_SEQ.NEXTVAL PRIMARY KEY,
+    id_casa_discuri INT,
+    nume VARCHAR(255),
+    an_debut INT,
+    FOREIGN KEY(id_casa_discuri) REFERENCES CASA_DISCURI(id_casa_discuri)
+);
+
+INSERT INTO ARTIST(id_casa_discuri, nume, an_debut) VALUES (1, 'Lana del Rey', 2012);
+
+INSERT INTO ARTIST(id_casa_discuri, nume, an_debut) VALUES (7, 'BTS', 2013);
+
+INSERT INTO ARTIST(id_casa_discuri, nume, an_debut) VALUES (1, 'Ariana Grande', 2013);
+
+INSERT INTO ARTIST(id_casa_discuri, nume, an_debut) VALUES (2, 'Olivia Rodrigo', 2021);
+
+INSERT INTO ARTIST(id_casa_discuri, nume, an_debut) VALUES (5, 'Arctic Monkeys', 2002);
+
+INSERT INTO ARTIST(id_casa_discuri, nume, an_debut) VALUES (3, 'RM', 2018);
+
+INSERT INTO ARTIST(id_casa_discuri, nume, an_debut) VALUES (6, 'The Neighbourhood', 2011);
+
+INSERT INTO ARTIST(id_casa_discuri, nume, an_debut) VALUES (4, 'Billie Eilish', 2017);
+
+INSERT INTO ARTIST(id_casa_discuri, nume, an_debut) VALUES (4, 'Dua Lipa', 2017);
+
+INSERT INTO ARTIST(id_casa_discuri, nume, an_debut) VALUES (7, 'EXO', 2012);
+
+INSERT INTO ARTIST(id_casa_discuri, nume, an_debut) VALUES (7, 'NewJeans', 2022);
+
+SELECT *
+FROM ARTIST
+ORDER BY id_artist;
+
+--GEN
+
+CREATE TABLE GEN(
+    id_gen INT DEFAULT GEN_SEQ.NEXTVAL PRIMARY KEY,
+    nume VARCHAR(255)
+);
+
+INSERT INTO GEN(nume) VALUES ('pop');
+
+INSERT INTO GEN(nume) VALUES ('rock');
+
+INSERT INTO GEN(nume) VALUES ('k-pop');
+
+INSERT INTO GEN(nume) VALUES ('indie');
+
+INSERT INTO GEN(nume) VALUES ('rap');
+
+INSERT INTO GEN(nume) VALUES ('trap');
+
+INSERT INTO GEN(nume) VALUES ('hip hop');
+
+INSERT INTO GEN(nume) VALUES ('jazz');
+
+INSERT INTO GEN(nume) VALUES ('dubstep');
+
+INSERT INTO GEN(nume) VALUES ('disco');
+
+INSERT INTO GEN(nume) VALUES ('country');
+
+INSERT INTO GEN(nume) VALUES ('house');
+
+INSERT INTO GEN(nume) VALUES ('metal');
+
+INSERT INTO GEN(nume) VALUES ('latino');
+
+SELECT *
+FROM GEN
+ORDER BY id_gen;
+
+--ALBUM
+
+CREATE TABLE ALBUM(
+    id_album INT DEFAULT ALBUM_SEQ.NEXTVAL PRIMARY KEY,
+    id_artist INT,
+    titlu VARCHAR(255),
+    data_lansare DATE,
+    durata INT,
+    FOREIGN KEY(id_artist) REFERENCES ARTIST(id_artist)
+);
+
+INSERT INTO ALBUM(id_artist, titlu, data_lansare, durata) VALUES (1, 'Born To Die', '27-JAN-2012', 2968);
+
+INSERT INTO ALBUM(id_artist, titlu, data_lansare, durata) VALUES (1, 'Ultraviolence', '13-JUN-2014', 2637);
+
+INSERT INTO ALBUM(id_artist, titlu, data_lansare, durata) VALUES (1, 'Chemtrails Over The Country Club', '19-MAR-2021', 2453);
+
+INSERT INTO ALBUM(id_artist, titlu, data_lansare, durata) VALUES (2, 'Love Yourself: Tear', '25-MAY-2018', 2968);
+
+INSERT INTO ALBUM(id_artist, titlu, data_lansare, durata) VALUES (2, 'Wings', '09-OCT-2016', 2013);
+
+INSERT INTO ALBUM(id_artist, titlu, data_lansare, durata) VALUES (3, 'eternal sunshine', '08-MAR-2024', 2324);
+
+INSERT INTO ALBUM(id_artist, titlu, data_lansare, durata) VALUES (3, 'Dangerous Woman', '20-MAY-2016', 2338);
+
+INSERT INTO ALBUM(id_artist, titlu, data_lansare, durata) VALUES (4, 'Sour', '21-MAY-2021', 1968);
+
+INSERT INTO ALBUM(id_artist, titlu, data_lansare, durata) VALUES (5, 'Favourite Worst Nightmare', '23-APR-2007', 2238);
+
+INSERT INTO ALBUM(id_artist, titlu, data_lansare, durata) VALUES (6, 'mono.', '23-OCT-2018', 2448);
+
+INSERT INTO ALBUM(id_artist, titlu, data_lansare, durata) VALUES (6, 'Indigo', '02-DEC-2022', 1908);
+
+INSERT INTO ALBUM(id_artist, titlu, data_lansare, durata) VALUES (7, 'Wiped Out!', '30-OCT-2015', 2718);
+
+INSERT INTO ALBUM(id_artist, titlu, data_lansare, durata) VALUES (7, 'I Love You.', '22-APR-2013', 2687);
+
+INSERT INTO ALBUM(id_artist, titlu, data_lansare, durata) VALUES (8, 'dont smile at me', '11-AUG-2017', 2328);
+
+INSERT INTO ALBUM(id_artist, titlu, data_lansare, durata) VALUES (8, 'Happier Than Ever', '30-JUL-2021', 1923);
+
+INSERT INTO ALBUM(id_artist, titlu, data_lansare, durata) VALUES (9, 'Future Nostalgia', '27-MAR-2020', 2024);
+
+INSERT INTO ALBUM(id_artist, titlu, data_lansare, durata) VALUES (10, 'The War', '18-JUL-2017', 2783);
+
+INSERT INTO ALBUM(id_artist, titlu, data_lansare, durata) VALUES (10, 'EXODUS', '30-MAR-2015', 2777);
+
+INSERT INTO ALBUM(id_artist, titlu, data_lansare, durata) VALUES (10, 'OBSESSION', '27-NOV-2019', 2323);
+
+INSERT INTO ALBUM(id_artist, titlu, data_lansare, durata) VALUES (11, 'Get Up', '21-JUL-2023', 2222);
+
+SELECT *
+FROM ALBUM
+ORDER BY id_album;
+
+--MELODIE
+
+CREATE TABLE MELODIE(
+    id_melodie INT DEFAULT MELODIE_SEQ.NEXTVAL PRIMARY KEY,
+    id_album INT,
+    titlu VARCHAR(255),
+    durata INT,
+    data_lansare DATE,
+    FOREIGN KEY(id_album) REFERENCES ALBUM(id_album)
+);
+
+INSERT INTO MELODIE(id_album, titlu, durata, data_lansare) VALUES (1, 'Video Games', 295, NULL);
+
+INSERT INTO MELODIE(id_album, titlu, durata, data_lansare)  VALUES (2, 'Shades Of Cool', 243, NULL);
+
+INSERT INTO MELODIE(id_album, titlu, durata, data_lansare)  VALUES (3, 'Chemtrails Over The Country Club', 233, NULL);
+
+INSERT INTO MELODIE(id_album, titlu, durata, data_lansare) VALUES (4, 'FAKE LOVE', 287, NULL);
+
+INSERT INTO MELODIE(id_album, titlu, durata, data_lansare) VALUES (5, 'Blood Sweat and Tears', 213, NULL);
+
+INSERT INTO MELODIE(id_album, titlu, durata, data_lansare) VALUES (6, 'bye', 233, NULL);
+
+INSERT INTO MELODIE(id_album, titlu, durata, data_lansare) VALUES (7, 'Into You', 277, NULL);
+
+INSERT INTO MELODIE(id_album, titlu, durata, data_lansare) VALUES (8, 'traitor', 260, NULL);
+
+INSERT INTO MELODIE(id_album, titlu, durata, data_lansare) VALUES (8, 'drivers license', 188, NULL);
+
+INSERT INTO MELODIE(id_album, titlu, durata, data_lansare) VALUES (9, '505', 200, NULL);
+
+INSERT INTO MELODIE(id_album, titlu, durata, data_lansare) VALUES (10, 'forever rain', 205, NULL);
+
+INSERT INTO MELODIE(id_album, titlu, durata, data_lansare) VALUES (10, 'moonchild', 160, NULL);
+
+INSERT INTO MELODIE(id_album, titlu, durata, data_lansare) VALUES (11, 'Wild Flower', 200, NULL);
+
+INSERT INTO MELODIE(id_album, titlu, durata, data_lansare) VALUES (12, 'Daddy Issues', 295, NULL);
+
+INSERT INTO MELODIE(id_album, titlu, durata, data_lansare) VALUES (13, 'Sweater Weather', 242, NULL);
+
+INSERT INTO MELODIE(id_album, titlu, durata, data_lansare) VALUES (14, 'copycat', 234, NULL);
+
+INSERT INTO MELODIE(id_album, titlu, durata, data_lansare) VALUES (15, 'Happier Than Ever', 234, NULL);
+
+INSERT INTO MELODIE(id_album, titlu, durata, data_lansare) VALUES (16, 'Levitating', 199, NULL);
+
+INSERT INTO MELODIE(id_album, titlu, durata, data_lansare) VALUES (17, 'Ko Ko Bop', 180, NULL);
+
+INSERT INTO MELODIE(id_album, titlu, durata, data_lansare) VALUES (17, 'Going Crazy', 300, NULL);
+
+INSERT INTO MELODIE(id_album, titlu, durata, data_lansare) VALUES (18, 'Call Me Baby', 233, NULL);
+
+INSERT INTO MELODIE(id_album, titlu, durata, data_lansare) VALUES (19, 'OBSESSION', 176, NULL);
+
+INSERT INTO MELODIE(id_album, titlu, durata, data_lansare) VALUES (20, 'ETA', 245, NULL);
+
+INSERT INTO MELODIE(id_album, titlu, durata, data_lansare) VALUES (20, 'Get Up', 119, NULL);
+
+SELECT *
+FROM MELODIE
+ORDER BY id_melodie;
+
+
+--tabelele asociative
+
+--gen_album
+
+CREATE TABLE GEN_ALBUM(
+    id_album INT,
+    id_gen INT,
+    PRIMARY KEY(id_album, id_gen),
+    FOREIGN KEY(id_album) REFERENCES ALBUM(id_album),
+    FOREIGN KEY(id_gen) REFERENCES GEN(id_gen)
+);
+
+INSERT INTO GEN_ALBUM(id_album, id_gen) VALUES (1, 1);
+INSERT INTO GEN_ALBUM(id_album, id_gen) VALUES (1, 4);
+INSERT INTO GEN_ALBUM(id_album, id_gen) VALUES (2, 4);
+INSERT INTO GEN_ALBUM(id_album, id_gen) VALUES (3, 11);
+INSERT INTO GEN_ALBUM(id_album, id_gen) VALUES (4, 3);
+INSERT INTO GEN_ALBUM(id_album, id_gen) VALUES (5, 3);
+INSERT INTO GEN_ALBUM(id_album, id_gen) VALUES (6, 1);
+INSERT INTO GEN_ALBUM(id_album, id_gen) VALUES (7, 1);
+INSERT INTO GEN_ALBUM(id_album, id_gen) VALUES (8, 1);
+INSERT INTO GEN_ALBUM(id_album, id_gen) VALUES (8, 2);
+INSERT INTO GEN_ALBUM(id_album, id_gen) VALUES (9, 2);
+INSERT INTO GEN_ALBUM(id_album, id_gen) VALUES (10, 3);
+INSERT INTO GEN_ALBUM(id_album, id_gen) VALUES (10, 4);
+INSERT INTO GEN_ALBUM(id_album, id_gen) VALUES (11, 1);
+INSERT INTO GEN_ALBUM(id_album, id_gen) VALUES (11, 3);
+INSERT INTO GEN_ALBUM(id_album, id_gen) VALUES (11, 4);
+INSERT INTO GEN_ALBUM(id_album, id_gen) VALUES (12, 2);
+INSERT INTO GEN_ALBUM(id_album, id_gen) VALUES (13, 2);
+INSERT INTO GEN_ALBUM(id_album, id_gen) VALUES (14, 4);
+INSERT INTO GEN_ALBUM(id_album, id_gen) VALUES (15, 4);
+INSERT INTO GEN_ALBUM(id_album, id_gen) VALUES (16, 10);
+INSERT INTO GEN_ALBUM(id_album, id_gen) VALUES (16, 12);
+INSERT INTO GEN_ALBUM(id_album, id_gen) VALUES (17, 3);
+INSERT INTO GEN_ALBUM(id_album, id_gen) VALUES (18, 3);
+INSERT INTO GEN_ALBUM(id_album, id_gen) VALUES (19, 3);
+INSERT INTO GEN_ALBUM(id_album, id_gen) VALUES (20, 3);
+INSERT INTO GEN_ALBUM(id_album, id_gen) VALUES (20, 4);
+INSERT INTO GEN_ALBUM(id_album, id_gen) VALUES (20, 5);
+
+SELECT *
+FROM GEN_ALBUM
+ORDER BY id_album;
+
+--gen_melodie
+
+CREATE TABLE GEN_MELODIE(
+    id_melodie INT,
+    id_gen INT,
+    PRIMARY KEY(id_melodie, id_gen),
+    FOREIGN KEY(id_melodie) REFERENCES MELODIE(id_melodie),
+    FOREIGN KEY(id_gen) REFERENCES GEN(id_gen)
+);
+
+INSERT INTO GEN_MELODIE(id_melodie, id_gen) VALUES (1, 4);
+INSERT INTO GEN_MELODIE(id_melodie, id_gen) VALUES (2, 4);
+INSERT INTO GEN_MELODIE(id_melodie, id_gen) VALUES (3, 11);
+INSERT INTO GEN_MELODIE(id_melodie, id_gen) VALUES (4, 3);
+INSERT INTO GEN_MELODIE(id_melodie, id_gen) VALUES (5, 3);
+INSERT INTO GEN_MELODIE(id_melodie, id_gen) VALUES (6, 1);
+INSERT INTO GEN_MELODIE(id_melodie, id_gen) VALUES (7, 1);
+INSERT INTO GEN_MELODIE(id_melodie, id_gen) VALUES (8, 1);
+INSERT INTO GEN_MELODIE(id_melodie, id_gen) VALUES (8, 2);
+INSERT INTO GEN_MELODIE(id_melodie, id_gen) VALUES (9, 1);
+INSERT INTO GEN_MELODIE(id_melodie, id_gen) VALUES (10, 2);
+INSERT INTO GEN_MELODIE(id_melodie, id_gen) VALUES (11, 3);
+INSERT INTO GEN_MELODIE(id_melodie, id_gen) VALUES (12, 4);
+INSERT INTO GEN_MELODIE(id_melodie, id_gen) VALUES (13, 1);
+INSERT INTO GEN_MELODIE(id_melodie, id_gen) VALUES (14, 2);
+INSERT INTO GEN_MELODIE(id_melodie, id_gen) VALUES (15, 2);
+INSERT INTO GEN_MELODIE(id_melodie, id_gen) VALUES (16, 4);
+INSERT INTO GEN_MELODIE(id_melodie, id_gen) VALUES (17, 4);
+INSERT INTO GEN_MELODIE(id_melodie, id_gen) VALUES (18, 10);
+INSERT INTO GEN_MELODIE(id_melodie, id_gen) VALUES (19, 3);
+INSERT INTO GEN_MELODIE(id_melodie, id_gen) VALUES (20, 3);
+INSERT INTO GEN_MELODIE(id_melodie, id_gen) VALUES (21, 3);
+INSERT INTO GEN_MELODIE(id_melodie, id_gen) VALUES (22, 3);
+INSERT INTO GEN_MELODIE(id_melodie, id_gen) VALUES (23, 5);
+INSERT INTO GEN_MELODIE(id_melodie, id_gen) VALUES (24, 5);
+INSERT INTO GEN_MELODIE(id_melodie, id_gen) VALUES (24, 4);
+INSERT INTO GEN_MELODIE(id_melodie, id_gen) VALUES (24, 3);
+
+SELECT *
+FROM GEN_MELODIE
+ORDER BY id_melodie;
+
+
+--melodie_playlist
+
+CREATE TABLE MELODIE_PLAYLIST(
+    id_melodie INT,
+    id_playlist INT,
+    PRIMARY KEY(id_melodie, id_playlist),
+    FOREIGN KEY(id_melodie) REFERENCES MELODIE(id_melodie),
+    FOREIGN KEY(id_playlist) REFERENCES PLAYLIST(id_playlist)
+);
+
+
+INSERT INTO MELODIE_PLAYLIST(id_melodie, id_playlist) VALUES (1,1);
+INSERT INTO MELODIE_PLAYLIST(id_melodie, id_playlist) VALUES (2,1);
+INSERT INTO MELODIE_PLAYLIST(id_melodie, id_playlist) VALUES (9,1);
+INSERT INTO MELODIE_PLAYLIST(id_melodie, id_playlist) VALUES (17,1);
+INSERT INTO MELODIE_PLAYLIST(id_melodie, id_playlist) VALUES (13,1);
+INSERT INTO MELODIE_PLAYLIST(id_melodie, id_playlist) VALUES (1,2);
+INSERT INTO MELODIE_PLAYLIST(id_melodie, id_playlist) VALUES (8,2);
+INSERT INTO MELODIE_PLAYLIST(id_melodie, id_playlist) VALUES (2,3);
+INSERT INTO MELODIE_PLAYLIST(id_melodie, id_playlist) VALUES (7,3);
+INSERT INTO MELODIE_PLAYLIST(id_melodie, id_playlist) VALUES (12,5);
+
+SELECT *
+FROM MELODIE_PLAYLIST
+ORDER BY id_playlist;
+
+--artist_melodie
+
+CREATE TABLE ARTIST_MELODIE(
+    id_artist INT,
+    id_melodie INT,
+    PRIMARY KEY(id_artist, id_melodie),
+    FOREIGN KEY(id_artist) REFERENCES ARTIST(id_artist),
+    FOREIGN KEY(id_melodie) REFERENCES MELODIE(id_melodie)
+);
+
+INSERT INTO ARTIST_MELODIE(id_artist, id_melodie) VALUES(1, 1);
+INSERT INTO ARTIST_MELODIE(id_artist, id_melodie) VALUES(1, 2);
+INSERT INTO ARTIST_MELODIE(id_artist, id_melodie) VALUES(1, 3);
+INSERT INTO ARTIST_MELODIE(id_artist, id_melodie) VALUES(2, 4);
+INSERT INTO ARTIST_MELODIE(id_artist, id_melodie) VALUES(2, 5);
+INSERT INTO ARTIST_MELODIE(id_artist, id_melodie) VALUES(2, 11);
+INSERT INTO ARTIST_MELODIE(id_artist, id_melodie) VALUES(2, 12);
+INSERT INTO ARTIST_MELODIE(id_artist, id_melodie) VALUES(2, 13);
+INSERT INTO ARTIST_MELODIE(id_artist, id_melodie) VALUES(3, 6);
+INSERT INTO ARTIST_MELODIE(id_artist, id_melodie) VALUES(3, 7);
+INSERT INTO ARTIST_MELODIE(id_artist, id_melodie) VALUES(4, 8);
+INSERT INTO ARTIST_MELODIE(id_artist, id_melodie) VALUES(4, 9);
+INSERT INTO ARTIST_MELODIE(id_artist, id_melodie) VALUES(5, 10);
+INSERT INTO ARTIST_MELODIE(id_artist, id_melodie) VALUES(6, 11);
+INSERT INTO ARTIST_MELODIE(id_artist, id_melodie) VALUES(6, 12);
+INSERT INTO ARTIST_MELODIE(id_artist, id_melodie) VALUES(6, 13);
+INSERT INTO ARTIST_MELODIE(id_artist, id_melodie) VALUES(7, 14);
+INSERT INTO ARTIST_MELODIE(id_artist, id_melodie) VALUES(7, 15);
+INSERT INTO ARTIST_MELODIE(id_artist, id_melodie) VALUES(8, 16);
+INSERT INTO ARTIST_MELODIE(id_artist, id_melodie) VALUES(8, 17);
+INSERT INTO ARTIST_MELODIE(id_artist, id_melodie) VALUES(9, 18);
+INSERT INTO ARTIST_MELODIE(id_artist, id_melodie) VALUES(10, 19);
+INSERT INTO ARTIST_MELODIE(id_artist, id_melodie) VALUES(10, 20);
+INSERT INTO ARTIST_MELODIE(id_artist, id_melodie) VALUES(10, 21);
+INSERT INTO ARTIST_MELODIE(id_artist, id_melodie) VALUES(10, 22);
+INSERT INTO ARTIST_MELODIE(id_artist, id_melodie) VALUES(11, 23);
+INSERT INTO ARTIST_MELODIE(id_artist, id_melodie) VALUES(11, 24);
+
+SELECT *
+FROM ARTIST_MELODIE
+ORDER BY id_melodie;
+--  Cerinta 6:
+--  Formulați în limbaj natural o problemă pe care să o rezolvați folosind un subprogram 
+--  stocat independent care să utilizeze toate cele 3 tipuri de colecții studiate. Apelați subprogramul.
+--  Pentru un utilizator dat, sa se afiseze tipul de abonament pe care il are, 
+--  playlist-urile sale, iar pentru fiecare playlist cate un mesaj specific: daca nu are nicio melodie, 
+--  sa se afiseze „Nu avem melodii in acest playlist”, in caz contrar sa se afiseze numarul de melodii din playlist, 
+--  titlul fiecarei melodii si durata acesteia.
+
+
+create or replace procedure cerinta_6 (
+    v_utilizator in utilizator.nume%type
+) 
+is
+    v_tip_abonament abonament.tip_abonament%type;
+    --tablou indexat care retine numele playlist-urilor
+    type playlisturi is table of playlist.nume%type index by pls_integer;
+    v_playlisturi playlisturi;
+    
+    --tablou imbricat care retine numele melodiilor
+    type melodii is table of melodie.titlu%type;
+    v_melodii melodii;
+    
+    --varray care reprezinta un vector caracteristic care indica daca un 
+    --playlist contine sau nu melodii
+    
+    type v_caracteristic is varray(256) of boolean;
+    are_melodii v_caracteristic := v_caracteristic();
+    aux number;
+begin
+    dbms_output.put_line('Nume utilizator: ' || v_utilizator);
+    select tip_abonament
+    into v_tip_abonament
+    from utilizator
+    join abonament on utilizator.id_abonament = abonament.id_abonament
+    where utilizator.nume = v_utilizator;
+    if(v_tip_abonament is not null) then
+        dbms_output.put_line('Tip abonament: ' || v_tip_abonament);
+    else
+        dbms_output.put_line('Utilizatorul nu exista.');
+        return;
+    end if;
+
+    select nume
+    bulk collect into v_playlisturi
+    from playlist
+    where id_utilizator = (select id_utilizator
+                           from utilizator
+                           where nume = v_utilizator);
+    are_melodii.extend(v_playlisturi.count);
+    for i in 1..v_playlisturi.count loop --initializam vectorul caracteristic
+        are_melodii(i) := false;
+    end loop;
+
+    select titlu
+    bulk collect into v_melodii
+    from melodie
+    join melodie_playlist on melodie.id_melodie = melodie_playlist.id_melodie
+    where id_playlist in (select id_playlist
+                          from playlist
+                          where id_utilizator = (select id_utilizator
+                                                 from utilizator
+                                                 where nume = v_utilizator));
+
+    for i in 1..v_melodii.count loop
+        for j in 1..v_playlisturi.count loop
+                select count(*)
+                into aux
+                from melodie_playlist
+                where id_melodie = (select id_melodie
+                                    from melodie
+                                    where titlu = v_melodii(i))
+                and id_playlist = (select id_playlist
+                                  from playlist
+                                  where nume = v_playlisturi(j));
+
+                if aux > 0 then
+                    are_melodii(j) := true;
+                end if;
+        end loop;
+    end loop;
+
+    for i in 1..v_playlisturi.count loop
+        dbms_output.put_line('Playlist: ' || v_playlisturi(i));
+        if are_melodii(i) = false then
+            dbms_output.put_line('Nu avem melodii in acest playlist.');
+        else
+            dbms_output.put_line('Numar melodii: ' || v_melodii.count);
+            for j in 1..v_melodii.count loop
+                dbms_output.put_line('Melodie: ' || v_melodii(j));
+                select durata
+                into aux
+                from melodie
+                where titlu = v_melodii(j);
+                dbms_output.put_line('Durata: ' || floor(aux/60) || 'm ' || aux mod 60 || 's');
+            end loop;
+        end if;
+    end loop;
+end;
+    
+    
+begin
+    cerinta_6('anastasia');
+end;
+
+-- Cerinta 7
+
+-- Formulați în limbaj natural o problemă pe care să o rezolvați folosind un subprogram
+-- stocat independent care să utilizeze 2 tipuri diferite de cursoare studiate, unul dintre
+-- acestea fiind cursor parametrizat, dependent de celălalt cursor. Apelați subprogramul.
+
+-- Sa se gaseasca casa de discuri cu cei mai putini artisti si sa se afiseze artistii care au debutat dupa anul 2000.
+-- Daca exista mai multe case de discuri care indeplinesc conditia din cerinta,
+-- se va lua in considerare cea care are anul de infiintare mai apropiat de anul curent.
+
+create or replace procedure cerinta_7 as
+    cursor c1 is
+        select c.id_casa_discuri, c.nume, c.an_infiintare, count(a.id_artist) as nr_artisti
+        from casa_discuri c
+        join artist a on c.id_casa_discuri = a.id_casa_discuri
+        group by c.id_casa_discuri, c.nume, c.an_infiintare
+        order by nr_artisti, c.an_infiintare desc;
+
+    cursor c2(param casa_discuri.id_casa_discuri%type) is
+        select nume, an_debut
+        from artist a
+        where a.id_casa_discuri = param and a.an_debut > 2000;
+    v_id_casa_discuri casa_discuri.id_casa_discuri%type;
+    v_nume_casa_discuri casa_discuri.nume%type;
+    v_an_infiintare casa_discuri.an_infiintare%type;
+    v_nume_artist artist.nume%type;
+    v_an_debut artist.an_debut%type;
+    v_nr_artisti number;
+begin
+    open c1;
+    fetch c1 into v_id_casa_discuri, v_nume_casa_discuri, v_an_infiintare, v_nr_artisti;
+    close c1;
+
+    dbms_output.put_line('Casa de discuri cu cei mai putini artisti: ' || v_nume_casa_discuri);
+
+    open c2(v_id_casa_discuri);
+    loop
+        fetch c2 into v_nume_artist, v_an_debut;
+        exit when c2%notfound;
+        if (v_an_debut is null) then
+            dbms_output.put_line('Nu exista artisti care sa fi debutat dupa anul 2000.');
+        else
+            dbms_output.put_line('Artist: ' || v_nume_artist || '; An debut: ' || v_an_debut);
+        end if;
+    end loop;
+    close c2;
+end;
+
+
+begin
+    cerinta_7;
+end;
+
+-- Cerinta 8
+
+-- Formulați în limbaj natural o problemă pe care să o rezolvați folosind un subprogram stocat independent de
+-- tip funcție care să utilizeze într-o singură comandă SQL 3 dintre tabelele create.
+-- Tratați toate excepțiile care pot apărea, incluzând excepțiile predefinite NO_DATA_FOUND și TOO_MANY_ROWS.
+-- Apelați subprogramul astfel încât să evidențiați toate cazurile tratate.
+
+-- Pentru un utilizator dat, sa se ia playlist-ul cu durata cea mai mare si sa se afiseze cate melodii are.
+-- Sa se trateze cazurile in care utilizatorul nu are playlist-uri, respectiv are doar playlist-uri fara melodii.
+
+create or replace function cerinta_8(param in utilizator.nume%type) return number is
+    v_nr_melodii number;
+    v_nr_playlisturi number;
+    no_user_found exception;
+    no_playlist_found exception;
+    no_song_found exception;
+    cursor c1 is
+        select nume from utilizator;
+    v_nume utilizator.nume%type;
+    utilizator_gasit boolean := false;
+begin
+    open c1;
+    loop
+        fetch c1 into v_nume;
+        exit when c1%notfound;
+        if v_nume = param then
+            utilizator_gasit := true;
+            exit;
+        end if;
+    end loop;
+    close c1;
+    
+    if utilizator_gasit = false then
+        raise no_user_found;
+    end if;
+
+    select count(p.id_playlist) into v_nr_playlisturi
+    from utilizator u
+    join playlist p on u.id_utilizator = p.id_utilizator
+    where u.nume = param;
+
+    if v_nr_playlisturi = 0 then
+        raise no_playlist_found;
+    end if;
+
+    select count(mp.id_melodie) into v_nr_melodii
+    from utilizator u
+    join playlist p on u.id_utilizator = p.id_utilizator
+    join melodie_playlist mp on p.id_playlist = mp.id_playlist
+    join melodie m on mp.id_melodie = m.id_melodie
+    where u.nume = param
+        and p.id_playlist = (
+        select id_playlist
+        from (
+            select mp.id_playlist, sum(m.durata) as durata_totala
+            from playlist p1
+            join melodie_playlist mp on p1.id_playlist = mp.id_playlist
+            join melodie m on mp.id_melodie = m.id_melodie
+            group by mp.id_playlist
+            order by durata_totala desc
+            fetch first 1 rows only
+        )
+    );
+    if v_nr_melodii = 0 then
+        raise no_song_found;
+    end if;
+    return v_nr_melodii;
+exception
+    when no_data_found then
+        dbms_output.put_line('Nu s-a gasit nicio inregistrare');
+        return 0;
+    when too_many_rows then
+        dbms_output.put_line('Prea multe inregistrari');
+        return 0;
+    when no_user_found then
+        dbms_output.put_line('Utilizatorul nu exista');
+        return -1;
+    when no_playlist_found then
+        dbms_output.put_line('Utilizatorul nu are playlist-uri');
+        return 0;
+    when no_song_found then
+        dbms_output.put_line('Utilizatorul are playlist-uri, dar nu are melodii');
+        return 0;
+end;
+
+--cazul functional
+begin
+    dbms_output.put_line(cerinta_8('elenacurecheriu'));
+end;
+
+--cazul "utilizator inexistent"
+begin
+    dbms_output.put_line(cerinta_8('utilizatorinexistent'));
+end;
+
+--cazul "niciun playlist"
+begin
+    dbms_output.put_line(cerinta_8('costinel777'));
+end;
+
+--cazul "avem playlist-uri, dar nu au melodii"
+
+begin
+    dbms_output.put_line(cerinta_8('Marinica1959'));
+end;
+
+
+-- Cerinta 9
+
+-- Formulați în limbaj natural o problemă pe care să o rezolvați folosind un subprogram stocat independent de tip
+-- procedură care să aibă minim 2 parametri și să utilizeze într-o singură comandă SQL 5 dintre tabelele create.
+-- Definiți minim 2 excepții proprii, altele decât cele predefinite la nivel de sistem.
+-- Apelați subprogramul astfel încât să evidențiați toate cazurile definite și tratate.
+
+-- Pentru un playlist dat, sa se afiseze toate genurile melodiilor care se afla
+-- in playlist si sa se contorizeze frecventa acestora. In plus,
+-- sa se elimine din playlist melodiile care apartin mai multor genuri muzicale.
+
+create or replace procedure cerinta_9 (param in playlist.nume%type) is
+    no_playlist_found exception;
+    empty_playlist exception;
+    songs_not_in_multiple_genres exception;
+    v_id_playlist playlist.id_playlist%type;
+    v_nr_melodii number;
+    v_nr_melodii_gen number;
+    cursor c1 is
+        select id_playlist
+        from playlist
+        where param = playlist.nume;
+    cursor c2 is
+        select count(*) as nr_melodii
+        from melodie_playlist
+        where v_id_playlist = id_playlist;
+    cursor c3 is
+        select count(*) 
+        from
+        (
+            select mp.id_melodie
+            from melodie_playlist mp
+            join gen_melodie gm on mp.id_melodie = gm.id_melodie
+            where v_id_playlist = mp.id_playlist
+            group by mp.id_melodie
+            having count(gm.id_gen) > 1
+        );
+        
+    type t_melodii_eliminate is table of varchar2(256);
+    melodii_eliminate t_melodii_eliminate;
+begin
+    open c1;
+    fetch c1 into v_id_playlist;
+    if c1%notfound then
+        raise no_playlist_found;
+    elsif c1%rowcount > 1 then
+        RAISE_APPLICATION_ERROR(-20001, 'TOO_MANY_ROWS: Exista mai multe playlist-uri cu acelasi nume.');
+    end if;
+    close c1;
+
+    open c2;
+    fetch c2 into v_nr_melodii;
+    if v_nr_melodii = 0  then
+        raise empty_playlist;
+    end if;
+    close c2;
+
+    open c3;
+    fetch c3 into v_nr_melodii_gen;
+    if v_nr_melodii_gen = 0 then
+        raise songs_not_in_multiple_genres;
+    end if;
+    close c3;
+
+    select distinct m.titlu
+    bulk collect into melodii_eliminate
+    from melodie m
+    join melodie_playlist mp on m.id_melodie = mp.id_melodie
+    join gen_melodie gm on m.id_melodie = gm.id_melodie
+    join gen g on gm.id_gen = g.id_gen
+    join playlist p on mp.id_playlist = p.id_playlist
+    where mp.id_melodie in(
+        select mp.id_melodie
+        from melodie_playlist mp
+        join gen_melodie gm on mp.id_melodie = gm.id_melodie
+        where mp.id_playlist = v_id_playlist
+        group by mp.id_melodie
+        having count(distinct gm.id_gen) > 1
+        ) and mp.id_playlist = v_id_playlist;
+
+    delete from melodie_playlist
+    where id_melodie in(
+        select mp.id_melodie
+        from melodie_playlist mp
+        join gen_melodie gm on mp.id_melodie = gm.id_melodie
+        where mp.id_playlist = v_id_playlist
+        group by mp.id_melodie
+        having count(distinct gm.id_gen) > 1
+        ) and id_playlist = v_id_playlist;
+
+    dbms_output.put_line('Melodiile eliminate din playlist sunt:');
+    for i in 1..melodii_eliminate.count loop
+        dbms_output.put_line(melodii_eliminate(i));
+    end loop;
+
+    dbms_output.put_line('Genurile si frecventa melodiilor din playlist:');
+    for c4 in(
+        select g.nume, count(mp.id_melodie) as cnt
+        from melodie_playlist mp
+        join gen_melodie gm on mp.id_melodie = gm.id_melodie
+        join gen g on gm.id_gen = g.id_gen
+        where mp.id_playlist = v_id_playlist
+        group by g.nume
+        order by cnt desc
+        )
+    loop
+        dbms_output.put_line('Gen: ' || c4.nume || ', numar de aparitii: ' || c4.cnt);
+    end loop;
+
+    dbms_output.put_line('Melodiile ramase in playlist:');
+    for c5 in(
+        select m.titlu, g.nume
+        from melodie_playlist mp
+        join melodie m on mp.id_melodie = m.id_melodie
+        join gen_melodie gm on m.id_melodie = gm.id_melodie
+        join gen g on gm.id_gen = g.id_gen
+        where mp.id_playlist = v_id_playlist
+        )
+    loop
+        dbms_output.put_line('Melodie: ' || c5.titlu || ', gen: ' || c5.nume);
+    end loop;
+
+exception
+    when no_playlist_found then
+        dbms_output.put_line('Playlistul nu exista');
+    when empty_playlist then
+        dbms_output.put_line('Playlistul este gol');
+    when songs_not_in_multiple_genres then
+        dbms_output.put_line('Nu exista melodii in playlist care apartin mai multor genuri muzicale');
+end;
+
+--cazul 'playlist inexistent'
+begin
+    cerinta_9('Playlist inexistent');
+end;
+
+--cazul 'playlist gol'
+
+begin
+    cerinta_9('Road Trip');
+end;
+
+--cazul 'nu avem melodii care sa se afle in mai multe genuri muzicale'
+begin
+    cerinta_9('My favourite songs');
+end;
+
+--caz functional
+begin
+    cerinta_9('Chill Vibes');
+end;
+
+--Cerinta 10
+
+--Definiți un trigger de tip LMD la nivel de comandă. Declanșați trigger-ul.
+
+--Trigger care nu permite sa avem in baza de date un album cu data de lansare dupa data curenta
+
+create or replace trigger cerinta_10
+    after insert or update on album
+declare
+    cnt number;
+begin
+    select count(*) into cnt
+    from album
+    where data_lansare > sysdate;
+    if cnt > 0 then
+        raise_application_error(-20001, 'Nu putem avea un album lansat in viitor!');
+    end if;
+end;
+
+update album
+set data_lansare = to_date('2026-12-31', 'yyyy-mm-dd')
+where id_album = 1;
+
+select * from album;
+
+
+select * from utilizator;
+
+--Cerinta 11
+
+--Definiți un trigger de tip LMD la nivel de linie. Declanșați trigger-ul.
+
+--Trigger care nu ii permite unui utilizator sa aiba mai mult de 5 melodii intr-un playlist
+
+create or replace trigger cerinta_11
+    before insert on melodie_playlist
+    for each row
+declare
+    nr_melodii number;
+begin
+    select count(*) into nr_melodii
+    from melodie_playlist
+    where id_playlist = :new.id_playlist;
+    if nr_melodii >= 5 then
+        raise_application_error(-20001, 'Nu puteti adauga mai mult de 5 melodii in playlist');
+    end if;
+end;
+
+begin
+    insert into melodie_playlist(id_melodie, id_playlist) values(5, 1);
+end;
+
+
+--Cerinta 12
+
+--Definiți un trigger de tip LDD. Declanșați trigger-ul.
+
+--Trigger care memoreaza actiunile de tip CREATE, ALTER, DROP efectuate asupra bazei de date
+
+create table audit_user(
+    nume_bd varchar(256),
+    utilizator varchar(256),
+    eveniment varchar(256),
+    nume_obiect varchar(256),
+    tip_obiect varchar(256),
+    data_actiune date
+    );
+    
+create or replace trigger cerinta_12
+    after create or alter or drop on schema
+begin
+    insert into audit_user values (sys.database_name, sys.login_user, sys.sysevent, sys.dictionary_obj_name, sys.dictionary_obj_type, sysdate);
+end;
+
+create table concert(
+    artist varchar(256),
+    locatie varchar(256),
+    data date,
+    nr_locuri number
+    );
+
+alter table concert
+add (pret_bilet number);
+
+alter table concert
+drop column nr_locuri;
+
+drop table concert;
+select * from audit_user;
+
